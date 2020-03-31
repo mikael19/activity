@@ -1,5 +1,5 @@
 apiVersion: cert-manager.io/v1alpha2
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: letsencrypt-${APPLICATION_ENV}-issuer
   namespace: ${APPLICATION_ENV}
@@ -11,8 +11,10 @@ spec:
       name: letsencrypt-${APPLICATION_ENV}
     solvers:
     - dns01:
-        cnameStrategy: Follow
-        digitalocean:
-          tokenSecretRef:
-            name: digitalocean-dns
-            key: access-token
+      providers:
+        - name: clouddns
+          clouddns:
+            project: hikaya
+            serviceAccountSecretRef:
+              name: clouddns-dns01-solver-svc-acct
+              key: key.json

@@ -7,5 +7,12 @@ spec:
   secretName: letsencrypt-cert-${APPLICATION_ENV}-tls
   issuerRef:
     name: letsencrypt-${APPLICATION_ENV}-issuer
+    kind: ClusterIssuer
   dnsNames:
   - ${HOST_DOMAIN}
+  acme:
+    config:
+    - dns01:
+        provider: clouddns
+      domains:
+      - ${HOST_DOMAIN}
